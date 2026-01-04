@@ -1,0 +1,156 @@
+# CampusBazar API Routes - Full List
+
+Base URL: http://localhost:3000/api
+
+Header: Authorization: Bearer <your_jwt_token>
+
+---
+
+## Authentication
+
+- POST http://localhost:3000/api/auth/register [Public]
+  Register new user
+  Example body:
+    {
+      "name": "Test User",
+      "email": "testuser@example.com",
+      "password": "Test1234!"
+    }
+
+- POST http://localhost:3000/api/auth/login [Public]
+  Login and get token
+  Example body:
+    {
+      "email": "testuser@example.com",
+      "password": "Test1234!"
+    }
+
+---
+
+## User Profile
+
+- GET http://localhost:3000/api/user/profile [Auth Required]
+  Get current user profile
+
+- PATCH http://localhost:3000/api/user/profile [Auth Required]
+  Update name, collegeId, etc.
+  Example body:
+    {
+      "name": "Updated Name",
+      "collegeId": "COLL123"
+    }
+
+- PATCH http://localhost:3000/api/user/password [Auth Required]
+  Change password
+  Example body:
+    {
+      "oldPassword": "Test1234!",
+      "newPassword": "NewPass567!"
+    }
+
+- POST http://localhost:3000/api/user/fcm-token [Auth Required]
+  Save FCM token for push notifications
+  Example body:
+    {
+      "fcmToken": "dummy-fcm-token-123"
+    }
+
+- GET http://localhost:3000/api/user/favorites [Auth Required]
+  Get user's favorite listings
+
+---
+
+## Marketplace Listings
+
+- POST http://localhost:3000/api/listings [Auth Required]
+  Create new listing
+  Example body:
+    {
+      "title": "Sample Book",
+      "description": "A great book for sale.",
+      "price": 150,
+      "category": "Books",
+      "photos": ["https://example.com/photo1.jpg"]
+    }
+
+- GET http://localhost:3000/api/listings [Public]
+  Get all listings
+
+- GET http://localhost:3000/api/listings?search=...&category=... [Public]
+  Search and filter listings
+
+- GET http://localhost:3000/api/listings/:id [Public]
+  Get single listing
+
+- PATCH http://localhost:3000/api/listings/:id [Auth Required, Owner only]
+  Update listing
+  Example body:
+    {
+      "title": "Updated Title",
+      "description": "Updated description.",
+      "price": 200
+    }
+
+- DELETE http://localhost:3000/api/listings/:id [Auth Required, Owner only]
+  Delete listing
+
+- POST http://localhost:3000/api/listings/:id/favorite [Auth Required]
+  Toggle favorite for a listing
+
+---
+
+## Tutor Requests
+
+- POST http://localhost:3000/api/tutor-requests [Auth Required]
+  Create tutor request
+  Example body:
+    {
+      "subject": "Math",
+      "topic": "Calculus",
+      "description": "Need help with integrals.",
+      "preferredTime": "Evenings"
+    }
+
+- GET http://localhost:3000/api/tutor-requests [Public]
+  View all tutor requests
+
+- GET http://localhost:3000/api/tutor-requests/my [Auth Required]
+  View my tutor requests
+
+- GET http://localhost:3000/api/tutor-requests/:id [Public]
+  View single tutor request
+
+- PATCH http://localhost:3000/api/tutor-requests/:id [Auth Required, Owner only]
+  Update tutor request
+  Example body:
+    {
+      "subject": "Physics",
+      "topic": "Mechanics",
+      "description": "Updated description.",
+      "preferredTime": "Mornings"
+    }
+
+- DELETE http://localhost:3000/api/tutor-requests/:id [Auth Required, Owner only]
+  Delete tutor request
+
+---
+
+## Notifications
+
+- GET http://localhost:3000/api/notifications [Auth Required]
+  Get my notifications
+
+- PATCH http://localhost:3000/api/notifications/:id/read [Auth Required]
+  Mark one notification as read
+
+- PATCH http://localhost:3000/api/notifications/read-all [Auth Required]
+  Mark all notifications as read
+
+---
+
+## Chat
+
+- GET http://localhost:3000/api/chat/:otherUserId [Auth Required]
+  Get chat history with another user
+
+---

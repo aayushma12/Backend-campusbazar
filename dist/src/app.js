@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+require("../types/express");
+const express_1 = __importDefault(require("express"));
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+const auth_routes_1 = __importDefault(require("./features/auth/routes/auth.routes"));
+const user_routes_1 = __importDefault(require("./features/user/routes/user.routes"));
+const listing_routes_1 = __importDefault(require("./features/listing/routes/listing.routes"));
+const notification_routes_1 = __importDefault(require("./features/notification/routes/notification.routes"));
+const chat_routes_1 = __importDefault(require("./features/chat/routes/chat.routes"));
+app.use('/api/auth', auth_routes_1.default);
+app.use('/api/user', user_routes_1.default);
+app.use('/api/listings', listing_routes_1.default);
+app.use('/api/notifications', notification_routes_1.default);
+app.use('/api/chat', chat_routes_1.default);
+exports.default = app;
