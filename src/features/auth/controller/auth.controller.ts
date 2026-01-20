@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-// Mock DB
+// Mock-DB
 const users: any[] = [];
 
 export default {
