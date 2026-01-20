@@ -1,11 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { AuthRequest } from '../../../common/middleware/auth.guard';
 import { UserService } from '../service/user.service';
 import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { ChangePasswordDto } from '../dto/change-password.dto';
 
 const userService = new UserService();
 
-export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user!.id;
     const profile = await userService.getProfile(userId);
@@ -15,7 +16,7 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
   }
 };
 
-export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const updateProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user!.id;
     const dto: UpdateProfileDto = req.body;
@@ -26,7 +27,7 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+export const changePassword = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user!.id;
     const dto: ChangePasswordDto = req.body;

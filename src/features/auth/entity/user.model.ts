@@ -6,7 +6,7 @@ export interface IUser extends Document {
   password: string;
   fcmToken?: string;
   collegeId?: string;
-  id: string; // virtual id for TS
+  id: string; 
 }
 
 
