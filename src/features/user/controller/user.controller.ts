@@ -15,7 +15,7 @@ export const getProfile = async (req: AuthRequest, res: Response, next: NextFunc
     next({ status: 400, message: err.message });
   }
 };
-
+//update profile
 export const updateProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user!.id;
