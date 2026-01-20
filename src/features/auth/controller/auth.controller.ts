@@ -1,30 +1,28 @@
-import { Request, Response, NextFunction } from 'express';
-import { AuthService } from '../service/auth.service';
-import { RegisterDto } from '../dto/register.dto';
-import { LoginDto } from '../dto/login.dto';
+import { Request, Response } from 'express';
 
-const authService = new AuthService();
+// Mock-DB
+const users: any[] = [];
 
-export const register = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    console.log('Register request body:', req.body);
-    const dto: RegisterDto = req.body;
-    const result = await authService.register(dto);
-    res.status(201).json(result);
-  } catch (err: any) {
-    console.error('Register error:', err);
-    next({ status: 400, message: err.message });
-  }
+export default {
+  register: (req: Request, res: Response) => {
+    const { name, email, password } = req.body;
+
+    if (users.find(u => u.email === email)) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const newUser = { id: users.length + 1, name, email, password };
+    users.push(newUser);
+
+    return res.status(201).json({ user: newUser, accessToken: 'mock-token' });
+  },
+
+  login: (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const user = users.find(u => u.email === email && u.password === password);
+    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+
+    return res.status(200).json({ user, accessToken: 'mock-token' });
+  },
 };
-
-export const login = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dto: LoginDto = req.body;
-    const result = await authService.login(dto);
-    res.status(200).json(result);
-  } catch (err: any) {
-    next({ status: 400, message: err.message });
-  }
-};
-
-export default { register, login };

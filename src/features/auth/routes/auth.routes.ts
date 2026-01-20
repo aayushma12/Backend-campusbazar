@@ -4,6 +4,8 @@ import { validateBody } from '../middleware/validate-body.middleware';
 import { RegisterDto } from '../dto/register.dto';
 import { LoginDto } from '../dto/login.dto';
 
+
+//router
 const router = Router();
 
 router.post('/register', validateBody(RegisterDto), controller.register);
