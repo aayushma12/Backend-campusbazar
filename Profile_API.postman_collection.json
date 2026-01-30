@@ -1,0 +1,312 @@
+{
+    "info": {
+        "name": "Campus Bazar - Profile API",
+        "description": "Profile management endpoints with image upload and password change",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get Profile",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "profile"
+                    ]
+                },
+                "description": "Retrieve the authenticated user's profile information including all fields"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Profile - Basic Info",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "name",
+                            "value": "John Doe",
+                            "type": "text",
+                            "description": "User's full name"
+                        },
+                        {
+                            "key": "phoneNumber",
+                            "value": "+1234567890",
+                            "type": "text",
+                            "description": "Phone number"
+                        },
+                        {
+                            "key": "studentId",
+                            "value": "STU2024001",
+                            "type": "text",
+                            "description": "Student ID"
+                        },
+                        {
+                            "key": "batch",
+                            "value": "2024",
+                            "type": "text",
+                            "description": "Academic batch/year"
+                        },
+                        {
+                            "key": "collegeId",
+                            "value": "COL001",
+                            "type": "text",
+                            "description": "College ID"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "profile"
+                    ]
+                },
+                "description": "Update basic profile information (name, phone, student ID, batch, college ID)"
+            },
+            "response": []
+        },
+        {
+            "name": "Update Profile - With Image",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "name",
+                            "value": "Jane Smith",
+                            "type": "text",
+                            "description": "User's full name"
+                        },
+                        {
+                            "key": "phoneNumber",
+                            "value": "+9876543210",
+                            "type": "text",
+                            "description": "Phone number"
+                        },
+                        {
+                            "key": "studentId",
+                            "value": "STU2024002",
+                            "type": "text",
+                            "description": "Student ID"
+                        },
+                        {
+                            "key": "batch",
+                            "value": "2024",
+                            "type": "text",
+                            "description": "Academic batch/year"
+                        },
+                        {
+                            "key": "profilePicture",
+                            "type": "file",
+                            "src": [],
+                            "description": "Profile picture (JPEG, PNG, GIF, WebP, max 5MB)"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "profile"
+                    ]
+                },
+                "description": "Update profile with image upload. Old image is automatically deleted from Cloudinary."
+            },
+            "response": []
+        },
+        {
+            "name": "Update Profile - Change Password",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "oldPassword",
+                            "value": "currentPassword123",
+                            "type": "text",
+                            "description": "Current password (required with newPassword)"
+                        },
+                        {
+                            "key": "newPassword",
+                            "value": "newSecurePassword456",
+                            "type": "text",
+                            "description": "New password (min 6 characters, required with oldPassword)"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "profile"
+                    ]
+                },
+                "description": "Change user password. Both oldPassword and newPassword are required."
+            },
+            "response": []
+        },
+        {
+            "name": "Update Profile - Complete (All Fields)",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "name",
+                            "value": "Jane Smith",
+                            "type": "text",
+                            "description": "User's full name"
+                        },
+                        {
+                            "key": "phoneNumber",
+                            "value": "+9876543210",
+                            "type": "text",
+                            "description": "Phone number"
+                        },
+                        {
+                            "key": "studentId",
+                            "value": "STU2024002",
+                            "type": "text",
+                            "description": "Student ID"
+                        },
+                        {
+                            "key": "batch",
+                            "value": "2024",
+                            "type": "text",
+                            "description": "Academic batch/year"
+                        },
+                        {
+                            "key": "collegeId",
+                            "value": "COL001",
+                            "type": "text",
+                            "description": "College ID"
+                        },
+                        {
+                            "key": "profilePicture",
+                            "type": "file",
+                            "src": [],
+                            "description": "Profile picture (JPEG, PNG, GIF, WebP, max 5MB)"
+                        },
+                        {
+                            "key": "oldPassword",
+                            "value": "currentPassword123",
+                            "type": "text",
+                            "description": "Current password"
+                        },
+                        {
+                            "key": "newPassword",
+                            "value": "newSecurePassword456",
+                            "type": "text",
+                            "description": "New password (min 6 characters)"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "profile"
+                    ]
+                },
+                "description": "Complete profile update with all fields including image upload and password change"
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Profile Picture",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/profile/picture",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "profile",
+                        "picture"
+                    ]
+                },
+                "description": "Delete user's profile picture from Cloudinary and database"
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:5000",
+            "type": "string"
+        },
+        {
+            "key": "token",
+            "value": "your_jwt_token_here",
+            "type": "string"
+        }
+    ]
+}

@@ -13,7 +13,8 @@ export function authGuard(req: AuthRequest, res: Response, next: NextFunction) {
   }
   const token = authHeader.split(' ')[1];
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as User;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || 'access_secret';
+    const decoded = jwt.verify(token, accessTokenSecret) as any;
     req.user = decoded;
     next();
   } catch (err) {
