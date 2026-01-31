@@ -10,5 +10,6 @@ const router = Router();
 
 router.post('/register', validateBody(RegisterDto), controller.register);
 router.post('/login', validateBody(LoginDto), controller.login);
+router.post('/refresh', controller.refresh);
 
 export default router;

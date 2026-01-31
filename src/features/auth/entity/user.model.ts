@@ -7,7 +7,13 @@ export interface IUser extends Document {
   password: string;
   fcmToken?: string;
   collegeId?: string;
-  id: string; 
+  profilePicture?: string;
+  phoneNumber?: string;
+  studentId?: string;
+  batch?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  id: string;
 }
 
 
@@ -17,6 +23,10 @@ const UserSchema = new Schema<IUser>({
   password: { type: String, required: true },
   fcmToken: { type: String },
   collegeId: { type: String },
+  profilePicture: { type: String },
+  phoneNumber: { type: String },
+  studentId: { type: String },
+  batch: { type: String },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 UserSchema.virtual('id').get(function (this: IUser) {
