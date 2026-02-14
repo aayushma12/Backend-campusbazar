@@ -13,7 +13,7 @@ const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY || '30d';
 export class AuthService {
   private userRepository = new UserRepository();
 
-  async register(dto: RegisterDto): Promise<{ user: Partial<User>; message: string }> {
+  async register(dto: RegisterDto): Promise<{ user: Partial<User>; accessToken: string; refreshToken: string; message: string }> {
     const existing = await this.userRepository.findByEmail(dto.email);
     if (existing) throw new Error('Email already in use');
 
@@ -22,11 +22,27 @@ export class AuthService {
       name: dto.name,
       email: dto.email,
       password: hashedPassword,
+      role: (dto.role as any) || 'user'
     });
 
+    const accessToken = this.generateAccessToken(user.id, user.role);
+    const refreshToken = this.generateRefreshToken(user.id);
+
     return {
-      user: { id: user.id, name: user.name, email: user.email },
-      message: 'User registered successfully. Please login to continue.'
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phoneNumber: user.phoneNumber,
+        studentId: user.studentId,
+        batch: user.batch,
+        collegeId: user.collegeId,
+        profilePicture: user.profilePicture
+      },
+      accessToken,
+      refreshToken,
+      message: 'User registered successfully'
     };
   }
 
@@ -37,18 +53,28 @@ export class AuthService {
     const valid = await bcrypt.compare(dto.password, user.password);
     if (!valid) throw new Error('Invalid credentials');
 
-    const accessToken = this.generateAccessToken(user.id);
+    const accessToken = this.generateAccessToken(user.id, user.role);
     const refreshToken = this.generateRefreshToken(user.id);
 
     return {
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phoneNumber: user.phoneNumber,
+        studentId: user.studentId,
+        batch: user.batch,
+        collegeId: user.collegeId,
+        profilePicture: user.profilePicture
+      },
       accessToken,
       refreshToken
     };
   }
 
-  private generateAccessToken(userId: string): string {
-    return jwt.sign({ id: userId }, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY as any });
+  private generateAccessToken(userId: string, role?: string): string {
+    return jwt.sign({ id: userId, role }, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY as any });
   }
 
   private generateRefreshToken(userId: string): string {
@@ -64,5 +90,21 @@ export class AuthService {
     } catch (error) {
       throw new Error('Invalid refresh token');
     }
+  }
+
+  async getAllUsers(): Promise<Partial<User>[]> {
+    const users = await this.userRepository.findAll();
+    return users.map(user => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phoneNumber: user.phoneNumber,
+      studentId: user.studentId,
+      batch: user.batch,
+      collegeId: user.collegeId,
+      profilePicture: user.profilePicture,
+      createdAt: (user as any).createdAt
+    }));
   }
 }

@@ -13,10 +13,7 @@ export const getProfile = async (req: AuthRequest, res: Response, next: NextFunc
     try {
         const userId = req.user!.id;
         const profile = await profileService.getProfile(userId);
-        res.json({
-            success: true,
-            data: profile,
-        });
+        res.json(profile);
     } catch (err: any) {
         next({ status: 400, message: err.message });
     }
@@ -34,10 +31,7 @@ export const updateProfile = async (req: AuthRequest, res: Response, next: NextF
 
         const updated = await profileService.updateProfile(userId, dto, profilePictureFile);
 
-        res.json({
-            success: true,
-            data: updated,
-        });
+        res.json(updated);
     } catch (err: any) {
         next({ status: 400, message: err.message });
     }
@@ -52,10 +46,7 @@ export const deleteProfilePicture = async (req: AuthRequest, res: Response, next
         const userId = req.user!.id;
         const result = await profileService.deleteProfilePicture(userId);
 
-        res.json({
-            success: true,
-            data: result,
-        });
+        res.json(result);
     } catch (err: any) {
         next({ status: 400, message: err.message });
     }

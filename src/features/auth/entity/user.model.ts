@@ -11,6 +11,7 @@ export interface IUser extends Document {
   phoneNumber?: string;
   studentId?: string;
   batch?: string;
+  role: 'user' | 'admin';
   createdAt: Date;
   updatedAt: Date;
   id: string;
@@ -27,6 +28,7 @@ const UserSchema = new Schema<IUser>({
   phoneNumber: { type: String },
   studentId: { type: String },
   batch: { type: String },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 UserSchema.virtual('id').get(function (this: IUser) {

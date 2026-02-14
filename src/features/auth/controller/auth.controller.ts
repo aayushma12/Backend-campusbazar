@@ -9,7 +9,10 @@ export default {
       const result = await authService.register(req.body);
       return res.status(201).json(result);
     } catch (error: any) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({
+        success: false,
+        message: error.message
+      });
     }
   },
 
@@ -18,7 +21,10 @@ export default {
       const result = await authService.login(req.body);
       return res.status(200).json(result);
     } catch (error: any) {
-      return res.status(401).json({ message: error.message });
+      return res.status(401).json({
+        success: false,
+        message: error.message
+      });
     }
   },
 
@@ -26,12 +32,33 @@ export default {
     try {
       const { refreshToken } = req.body;
       if (!refreshToken) {
-        return res.status(400).json({ message: 'Refresh token is required' });
+        return res.status(400).json({
+          success: false,
+          message: 'Refresh token is required'
+        });
       }
       const result = await authService.refreshTokens(refreshToken);
       return res.status(200).json(result);
     } catch (error: any) {
-      return res.status(401).json({ message: error.message });
+      return res.status(401).json({
+        success: false,
+        message: error.message
+      });
+    }
+  },
+
+  getAllUsers: async (req: Request, res: Response) => {
+    try {
+      const users = await authService.getAllUsers();
+      return res.status(200).json({
+        success: true,
+        data: users
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
     }
   }
 };

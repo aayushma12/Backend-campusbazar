@@ -10,7 +10,7 @@ export class UserRepository implements IUserRepository {
     return this.model.findOne({ email });
   }
 
-  async create(user: { name: string; email: string; password: string; fcmToken?: string; collegeId?: string }): Promise<IUser> {
+  async create(user: { name: string; email: string; password: string; fcmToken?: string; collegeId?: string; role?: string }): Promise<IUser> {
     return this.model.create(user);
   }
 
@@ -20,5 +20,9 @@ export class UserRepository implements IUserRepository {
 
   async update(id: string, update: Partial<IUser>): Promise<IUser | null> {
     return this.model.findByIdAndUpdate(id, update, { new: true });
+  }
+
+  async findAll(): Promise<IUser[]> {
+    return this.model.find().sort({ createdAt: -1 });
   }
 }
