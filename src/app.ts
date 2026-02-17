@@ -7,32 +7,27 @@ import { trimBody } from './common/middleware/trim-body.middleware';
 
 const app = express();
 
-// Basic Request Logger
+// 1. CORS - MUST BE FIRST (More robust development setup)
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+}));
+
+// 2. Logger
 app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log(`\n>>> [${new Date().toISOString()}] ${req.method} ${req.url}`);
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`>>> [${new Date().toISOString()}] ${req.method} ${req.url} - ${res.statusCode} (${duration}ms)`);
+  });
   next();
 });
 
-// Middleware
+// 3. Standard Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(trimBody); // Moved to specific routes for multipart support
-
-// CORS setup
-app.use(cors({
-  origin: '*',                      // Allow all for testing - change to frontend URL in production
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
-
-// Make sure preflight requests respond with proper headers
-app.options('*', cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
 
 // Routes
 app.use('/api/auth', authRoutes);
