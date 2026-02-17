@@ -15,6 +15,8 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   id: string;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: number;
 }
 
 
@@ -29,6 +31,8 @@ const UserSchema = new Schema<IUser>({
   studentId: { type: String },
   batch: { type: String },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Number },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 UserSchema.virtual('id').get(function (this: IUser) {
