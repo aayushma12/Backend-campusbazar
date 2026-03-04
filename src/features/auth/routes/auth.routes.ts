@@ -24,13 +24,4 @@ router.post('/reset-password/:token', resetController.resetPassword);
 // User Management (Admin only)
 router.get('/users', authGuard, adminGuard, controller.getAllUsers);
 
-// auth.routes.ts
-
-// ... other imports
-router.post('/forgot-password', resetController.forgotPassword);
-
-// ✅ CHANGE THIS LINE: Add '/:token'
-router.post('/reset-password/:token', resetController.resetPassword); 
-
-
 export default router;
