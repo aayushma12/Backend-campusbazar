@@ -54,11 +54,7 @@ export class ProductService {
         // Upload images
         const imageUrls: string[] = [];
         for (const file of files) {
-            const result = await uploadToCloudinary(file.buffer, 'campus-bazar/products', [
-                { width: 1000, height: 1000, crop: 'limit' },
-                { quality: 'auto' },
-                { fetch_format: 'auto' }
-            ]);
+            const result = await uploadToCloudinary(file.buffer, 'campus-bazar/products');
             imageUrls.push(result.secure_url);
         }
 

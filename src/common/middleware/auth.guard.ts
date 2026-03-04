@@ -21,3 +21,21 @@ export function authGuard(req: AuthRequest, res: Response, next: NextFunction) {
     return res.status(401).json({ success: false, message: 'Invalid token' });
   }
 }
+
+export function optionalAuthGuard(req: AuthRequest, _res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || 'access_secret';
+    const decoded = jwt.verify(token, accessTokenSecret) as any;
+    req.user = decoded;
+  } catch {
+    // Ignore invalid optional token and continue as anonymous user.
+  }
+
+  return next();
+}

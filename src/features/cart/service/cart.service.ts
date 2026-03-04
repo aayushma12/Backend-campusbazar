@@ -22,6 +22,7 @@ export class CartService {
         if (!product) throw new Error('Product not found');
         if (product.status !== 'available') throw new Error('Product is not available');
         if ((product.quantity ?? 0) <= 0) throw new Error('Out of stock');
+        if (product.ownerId.toString() === userId) throw new Error('You cannot add your own product to cart');
 
         // Check if already in cart
         const existing = await this.repository.findOne(userId, productId);

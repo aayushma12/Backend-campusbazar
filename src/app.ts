@@ -2,8 +2,18 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import authRoutes from './features/auth/routes/auth.routes';
 import profileRoutes from './features/profile/routes/profile.routes';
-
-import { trimBody } from './common/middleware/trim-body.middleware';
+import productRoutes from './features/product/routes/product.routes';
+import categoryRoutes from './features/category/routes/category.routes';
+import cartRoutes from './features/cart/routes/cart.routes';
+import wishlistRoutes from './features/wishlist/routes/wishlist.routes';
+import orderRoutes from './features/order/routes/order.routes';
+import paymentRoutes from './features/payment/routes/payment.routes';
+import tutorRoutes from './features/tutor/routes/tutor.routes';
+import bookingRoutes from './features/booking/routes/booking.routes';
+import chatRoutes from './features/chat/routes/chat.routes';
+import notificationRoutes from './features/notification/routes/notification.routes';
+import reportRoutes from './features/report/routes/report.routes';
+import adminRoutes from './features/admin/routes/admin.routes';
 
 const app = express();
 
@@ -30,8 +40,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/profile', profileRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/profile', profileRoutes);
+app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/wishlist', wishlistRoutes);
+app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/payment', paymentRoutes);
+app.use('/api/v1/tutor', tutorRoutes);
+app.use('/api/v1/bookings', bookingRoutes);
+app.use('/api/v1/chats', chatRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
+app.use('/api/v1/reports', reportRoutes);
+app.use('/api/v1/admin', adminRoutes);
+
+app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({ success: true, message: 'CampusBazar API is running' });
+});
 
 // Global Error Handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

@@ -96,6 +96,10 @@ export class PaymentService {
                 throw new Error('One or more products are no longer available');
             }
 
+            if (product.ownerId.toString() === buyerId) {
+                throw new Error('You cannot buy your own product');
+            }
+
             if ((product.quantity ?? 0) < quantity) {
                 throw new Error(`Only ${product.quantity} items available in stock.`);
             }
@@ -202,6 +206,10 @@ export class PaymentService {
             const quantity = Math.max(1, Math.floor(Number(lineItem.quantity) || 1));
             const product = await ProductModel.findById(pid);
             if (product) {
+                if (product.ownerId.toString() === transaction.buyerId.toString()) {
+                    throw new Error(`You cannot buy your own product (${pid})`);
+                }
+
                 if (product.status !== 'available') {
                     throw new Error(`Product ${pid} is no longer available`);
                 }

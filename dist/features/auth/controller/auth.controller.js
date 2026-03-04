@@ -9,7 +9,10 @@ exports.default = {
             return res.status(201).json(result);
         }
         catch (error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({
+                success: false,
+                message: error.message
+            });
         }
     },
     login: async (req, res) => {
@@ -18,20 +21,44 @@ exports.default = {
             return res.status(200).json(result);
         }
         catch (error) {
-            return res.status(401).json({ message: error.message });
+            return res.status(401).json({
+                success: false,
+                message: error.message
+            });
         }
     },
     refresh: async (req, res) => {
         try {
             const { refreshToken } = req.body;
             if (!refreshToken) {
-                return res.status(400).json({ message: 'Refresh token is required' });
+                return res.status(400).json({
+                    success: false,
+                    message: 'Refresh token is required'
+                });
             }
             const result = await authService.refreshTokens(refreshToken);
             return res.status(200).json(result);
         }
         catch (error) {
-            return res.status(401).json({ message: error.message });
+            return res.status(401).json({
+                success: false,
+                message: error.message
+            });
+        }
+    },
+    getAllUsers: async (req, res) => {
+        try {
+            const users = await authService.getAllUsers();
+            return res.status(200).json({
+                success: true,
+                data: users
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 };

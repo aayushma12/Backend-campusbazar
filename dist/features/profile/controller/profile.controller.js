@@ -11,10 +11,7 @@ const getProfile = async (req, res, next) => {
     try {
         const userId = req.user.id;
         const profile = await profileService.getProfile(userId);
-        res.json({
-            success: true,
-            data: profile,
-        });
+        res.json(profile);
     }
     catch (err) {
         next({ status: 400, message: err.message });
@@ -31,10 +28,7 @@ const updateProfile = async (req, res, next) => {
         const dto = req.body;
         const profilePictureFile = req.file; // Multer file
         const updated = await profileService.updateProfile(userId, dto, profilePictureFile);
-        res.json({
-            success: true,
-            data: updated,
-        });
+        res.json(updated);
     }
     catch (err) {
         next({ status: 400, message: err.message });
@@ -49,10 +43,7 @@ const deleteProfilePicture = async (req, res, next) => {
     try {
         const userId = req.user.id;
         const result = await profileService.deleteProfilePicture(userId);
-        res.json({
-            success: true,
-            data: result,
-        });
+        res.json(result);
     }
     catch (err) {
         next({ status: 400, message: err.message });
