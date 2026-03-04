@@ -45,6 +45,9 @@ const UserSchema = new mongoose_1.Schema({
     phoneNumber: { type: String },
     studentId: { type: String },
     batch: { type: String },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Number },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 UserSchema.virtual('id').get(function () {
     return this._id.toHexString();

@@ -18,5 +18,8 @@ class UserRepository {
     async update(id, update) {
         return this.model.findByIdAndUpdate(id, update, { new: true });
     }
+    async findAll() {
+        return this.model.find().sort({ createdAt: -1 });
+    }
 }
 exports.UserRepository = UserRepository;

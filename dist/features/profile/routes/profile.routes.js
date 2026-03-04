@@ -9,6 +9,7 @@ const validate_body_middleware_1 = require("../../auth/middleware/validate-body.
 const update_profile_with_password_dto_1 = require("../dto/update-profile-with-password.dto");
 const auth_guard_1 = require("../../../common/middleware/auth.guard");
 const multer_middleware_1 = require("../../../common/middleware/multer.middleware");
+const trim_body_middleware_1 = require("../../../common/middleware/trim-body.middleware");
 const router = (0, express_1.Router)();
 /**
  * @route   GET /api/profile
@@ -31,7 +32,8 @@ router.get('/', auth_guard_1.authGuard, profile_controller_1.default.getProfile)
  *          }
  * @file    profilePicture - Image file (optional)
  */
-router.patch('/', auth_guard_1.authGuard, multer_middleware_1.upload.single('profilePicture'), // Handle single file upload with field name 'profilePicture'
+router.patch('/', auth_guard_1.authGuard, multer_middleware_1.upload.single('profilePicture'), // Multer parses body here
+trim_body_middleware_1.trimBody, // Clean up tabs/spaces after multer is done
 (0, validate_body_middleware_1.validateBody)(update_profile_with_password_dto_1.UpdateProfileWithPasswordDto), profile_controller_1.default.updateProfile);
 /**
  * @route   DELETE /api/profile/picture

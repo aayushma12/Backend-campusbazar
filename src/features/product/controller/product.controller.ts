@@ -50,12 +50,6 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
         const filter: any = { status: ProductStatus.AVAILABLE };
 
-        // Exclude own products if logged in
-        const userId = (req as any).user?.id;
-        if (userId) {
-            filter.ownerId = { $ne: new mongoose.Types.ObjectId(userId) };
-        }
-
         if (req.query.search) {
             // Basic regex search since text index might need specific query structure or Atlas search
             const searchRegex = new RegExp(req.query.search as string, 'i');
