@@ -55,6 +55,11 @@ describe('BookingService.confirmPayment', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, 'log').mockImplementation();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('returns alreadyPaid and does not credit wallet when transaction is already done (idempotent replay)', async () => {

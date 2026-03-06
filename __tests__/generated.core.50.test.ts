@@ -489,23 +489,32 @@ describe('Service/business logic: AuthService', () => {
 
   it('resetPassword throws if token is not found anywhere', async () => {
     const service = new AuthService();
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
     mockedUserModel.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
 
     await expect(service.resetPassword('unknown', 'new-pw')).rejects.toThrow('Invalid or expired token');
+
+    consoleSpy.mockRestore();
   });
 
   it('resetPassword throws token-expired error when token exists but expired', async () => {
     const service = new AuthService();
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
     mockedUserModel.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce({ resetPasswordExpires: Date.now() - 1000 });
 
     await expect(service.resetPassword('expired-token', 'new-pw')).rejects.toThrow('Token expired. Please request a new password reset.');
+
+    consoleSpy.mockRestore();
   });
 
   it('resetPassword throws generic invalid when unknown reason branch is hit', async () => {
     const service = new AuthService();
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
     mockedUserModel.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce({ resetPasswordExpires: Date.now() + 999999 });
 
     await expect(service.resetPassword('weird-token', 'new-pw')).rejects.toThrow('Invalid or expired token');
+
+    consoleSpy.mockRestore();
   });
 
   it('resetPassword hashes new password and saves user', async () => {

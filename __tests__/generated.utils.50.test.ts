@@ -117,8 +117,11 @@ describe('Utilities: email.helper + cloudinary.helper', () => {
   it('deleteFromCloudinary rethrows errors from cloudinary destroy', async () => {
     // Verifies error propagation from cloudinary SDK.
     mockedCloudinary.uploader.destroy.mockRejectedValue(new Error('cloudinary failed'));
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
     await expect(deleteFromCloudinary('bad-id')).rejects.toThrow('cloudinary failed');
+
+    consoleSpy.mockRestore();
   });
 
   it('deleteFromCloudinary preserves returned shape for non-ok result', async () => {
