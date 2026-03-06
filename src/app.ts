@@ -28,9 +28,10 @@ app.use(cors({
 // 2. Logger
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
+  const requestPath = req.originalUrl || req.url;
   res.on('finish', () => {
     const duration = Date.now() - start;
-    console.log(`>>> [${new Date().toISOString()}] ${req.method} ${req.url} - ${res.statusCode} (${duration}ms)`);
+    console.log(`>>> [${new Date().toISOString()}] ${req.method} ${requestPath} - ${res.statusCode} (${duration}ms)`);
   });
   next();
 });
