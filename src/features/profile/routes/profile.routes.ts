@@ -9,6 +9,14 @@ import { trimBody } from '../../../common/middleware/trim-body.middleware';
 
 const router = Router();
 
+const updateProfileMiddlewares = [
+    authGuard,
+    upload.single('profilePicture'), // Multer parses body here
+    trimBody,                        // Clean up tabs/spaces after multer is done
+    validateBody(UpdateProfileWithPasswordDto),
+    controller.updateProfile,
+] as const;
+
 /**
  * @route   GET /api/profile
  * @desc    Get user profile
@@ -31,14 +39,12 @@ router.get('/', authGuard, controller.getProfile);
  *          }
  * @file    profilePicture - Image file (optional)
  */
-router.patch(
-    '/',
-    authGuard,
-    upload.single('profilePicture'), // Multer parses body here
-    trimBody,                        // Clean up tabs/spaces after multer is done
-    validateBody(UpdateProfileWithPasswordDto),
-    controller.updateProfile
-);
+router.patch('/', ...updateProfileMiddlewares);
+
+// Backward-compatible aliases for clients using PUT or explicit /update path
+router.put('/', ...updateProfileMiddlewares);
+router.patch('/update', ...updateProfileMiddlewares);
+router.put('/update', ...updateProfileMiddlewares);
 
 /**
  * @route   DELETE /api/profile/picture
